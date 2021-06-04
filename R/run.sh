@@ -21,13 +21,13 @@ retval=$?
 
 if [ $retval -eq 124 ] || [ $retval -eq 137 ]
 then
-  echo "Sorry, your command timed out [$retval] (maximum runtime is 10s)" > /rserve/www-run/3/${f%.R}.html
+  echo "Sorry, your command timed out [status=$retval] (maximum runtime is $MAXRUNTIME)" > /rserve/www-run/3/${f%.R}.html
 else
   if [ -f "$d/${f%.R}.html" ]
   then
     mv $d/${f%.R}.html /rserve/www-run/3
   else
-    echo "Sorry, it looks like R might have crashed while running your code! [$retval]" > /rserve/www-run/3/${f%.R}.html
+    echo "Sorry, it looks like R might have crashed while running your code! [status=$retval]" > /rserve/www-run/3/${f%.R}.html
   fi
 fi
 touch /rserve/lastrun
