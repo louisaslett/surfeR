@@ -3,7 +3,8 @@
 # Run with:
 # /rserve/Rserve.sh > /dev/null 2>/dev/null &
 
-N=2
+chmod u+x /rserve/config.sh
+. /rserve/config.sh
 
 docker stop php
 docker run --rm -d -p 80:80 --name php \
@@ -28,7 +29,7 @@ do
   # Check how many containers are running
   # Keep looping until we have capacity
   procs=(/rserve/Rrunning/*)
-  while [ ${#procs[@]} -gt $((N-1)) ]
+  while [ ${#procs[@]} -gt $((MAXSIMUL-1)) ]
   do
     echo "full"
     sleep 1

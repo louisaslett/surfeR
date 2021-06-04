@@ -3,6 +3,8 @@
 # Assumes an Ubuntu 20.04 system
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+chmod u+x $SCRIPT_DIR/config.sh
+. $SCRIPT_DIR/config.sh
 
 # Install Docker on Ubuntu 20.04
 apt update
@@ -22,10 +24,12 @@ docker pull php:apache
 # Setup directories
 mkdir -p /rserve /rserve/Rrunning /rserve/www-run /rserve/www-run/1 /rserve/www-run/2 /rserve/www-run/3
 cp $SCRIPT_DIR/Rserve.sh /rserve
+cp $SCRIPT_DIR/config.sh /rserve
 cp -r $SCRIPT_DIR/R /rserve
 cp -r $SCRIPT_DIR/www /rserve
 chown -R www-data:www-data /rserve
 chmod -R 755 /rserve
+echo "<?php\n\n\$DOMAIN='$DOMAIN'\n\$MAXRUNTIME='$MAXRUNTIME'\n\n?>\n" > /rserve/www/config.php
 
 echo "Starting server ..."
 /rserve/Rserve.sh > /dev/null 2>/dev/null &

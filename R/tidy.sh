@@ -1,4 +1,6 @@
 #!/bin/bash
 
+. /rserve/config.sh
+
 cd /rserve/www-run
-find . -maxdepth 2 -mmin +30 -type f -delete
+find . -maxdepth 2 -mmin +$GCTIMEOUT -type f -delete
