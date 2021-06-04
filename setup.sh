@@ -2,24 +2,30 @@
 
 # Assumes an Ubuntu 20.04 system
 
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
+
 # Install Docker on Ubuntu 20.04
-sudo apt update
-sudo apt install apt-transport-https ca-certificates curl software-properties-common
+apt update
+apt install -y apt-transport-https ca-certificates curl software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-sudo apt update
+add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
+apt update
 apt-cache policy docker-ce
 ### Check last line shows docker and not ubuntu repo
-sudo apt install docker-ce
-sudo systemctl status docker
+apt install -y docker-ce
+systemctl --no-pager status docker
 
 # Pull images
 docker pull rocker/ml-verse:4.0.5
 docker pull php:apache
 
 # Setup directories
-mkdir -p /rserve /rserve/R /rserve/Rrunning /rserve/www /rserve/www-run /rserve/www-run/1 /rserve/www-run/2 /rserve/www-run/3
+mkdir -p /rserve /rserve/Rrunning /rserve/www-run /rserve/www-run/1 /rserve/www-run/2 /rserve/www-run/3
+cp $SCRIPT_DIR/Rserve.sh /rserve
+cp -r $SCRIPT_DIR/R /rserve
+cp -r $SCRIPT_DIR/www /rserve
 chown -R www-data:www-data /rserve
 chmod -R 755 /rserve
 
-# Now put all info in place
+echo "Starting server ..."
+/rserve/Rserve.sh > /dev/null 2>/dev/null &
