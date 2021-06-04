@@ -32,7 +32,7 @@ cp -r $SCRIPT_DIR/R /rserve
 cp -r $SCRIPT_DIR/www /rserve
 chown -R www-data:www-data /rserve
 chmod -R 755 /rserve
-echo -e "<?php\n\n\$DOMAIN='$DOMAIN';\n\$MAXRUNTIME='$MAXRUNTIME';\n\n?>\n" > /rserve/www/config.php
+echo -e "<?php\n\n\$DOMAIN='$DOMAIN';\n\$MAXRUNTIME='$MAXRUNTIME';\n\n?>" > /rserve/www/config.php
 
 echo "Starting server ..."
 /rserve/Rserve.sh > /dev/null 2>/dev/null &

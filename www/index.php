@@ -1,5 +1,5 @@
 <?php
-include 'config.php'
+include 'config.php';
 
 # Check for required POST info
 if(!isset($_POST['code'])) {
