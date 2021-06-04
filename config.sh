@@ -5,7 +5,10 @@
 # Set the following to the domain you want to restrict access from.
 # Note this is only a minor hurdle to other sites submitting code to run and
 # not absolute protection.
-DOMAIN=".louisaslett.com"
+# eg, I use:
+# DOMAIN=".louisaslett.com"
+# but you can leave empty to eliminiate this behaviour
+DOMAIN=""
 
 # What is the maximum runtime to allow?
 # eg 30s => 30 seconds
