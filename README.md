@@ -1,5 +1,7 @@
 # Rserve
 
+This is designed to enable remote execution of R code for embedding in a web page.  It is currently alpha software, so there is only a quick start guide.  I am currently extensively testing it for a University course I am writing and once any kinks are ironed out this guide will become more extensive and include working examples.  In the meantime it is mostly made available for brave tinkerers!
+
 ## Quick start
 
 This guide assumes an Ubuntu 20.04 LTS install, such as you would get with a [Digital Ocean](https://www.digitalocean.com/) droplet.
