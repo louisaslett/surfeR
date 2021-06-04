@@ -28,4 +28,6 @@ If the server reboots, you can start the Rserve environment again by running
 /rserve/Rserve.sh
 ```
 
-Then, to test the setup, visit http://<your-server-ip-address>/test.html in a browser to test out the code.  Note that cookies tie your session, so if you want to test the queuing mechanism, you will need to launch multiple incognito/private browser sessions to do so.
+Then, to test the setup, visit http://your-server-ip-address/test.html in a browser to test out the code.  Note that cookies tie your session, so if you want to test the queuing mechanism, you will need to launch multiple incognito/private browser sessions to do so.
+
+Additionally, note that if you are going to call this embedded on a page on a different server, then you will need both websites to be served over SSL in order for it to work in Chrome (cross-site scripting requires https in Chrome).  It will work either way in Safari.
