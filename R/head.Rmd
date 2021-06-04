@@ -1,0 +1,12 @@
+---
+title: "Rserve: remote R exection (louisaslett/Rserve)"
+output:
+  html_document:
+    css: "hidehead.css"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, comment = NA)
+```
+
+```{r,echo=FALSE,error=TRUE}
