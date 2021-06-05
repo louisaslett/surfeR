@@ -83,12 +83,13 @@ function Rserve(url) {
 
     form_sub = document.createElement('input');
     form_sub.type = 'submit';
+    form_sub.className = 'rserveshowhide';
     form_sub.value = '▶️ Run code!';
 
     form.append(form_ta);
     form.append(form_sub);
 
-    rs_new.parentNode.insertBefore(form, rs_new.nextSibiling);
+    rs_new.parentNode.insertBefore(form, rs_new.nextSibling);
 
     // Create output area
     out = document.createElement('div');
@@ -129,10 +130,10 @@ function Rserve(url) {
     tmp.width = '100%';
     out.append(tmp);
 
-    form.parentNode.insertBefore(out, form.nextSibiling);
+    form.parentNode.insertBefore(out, form.nextSibling);
 
     // Break
-    out.parentNode.insertBefore(document.createElement('br'), out.nextSibiling);
+    out.parentNode.insertBefore(document.createElement('br'), out.nextSibling);
   }
 }
 
