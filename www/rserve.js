@@ -74,7 +74,7 @@ function Rserve(url) {
     form.action = url;
     form.method = 'POST';
     form.target = 'rserve_'+i+'_if';
-    form.onsubmit = new Function('event', "document.getElementById('rserve_"+i+"_code').value=aceeditors["+i+"].getValue(); document.getElementById('rserve_"+i+"_div').setAttribute('style','display:block;'); ShowR('rserve_"+i+"_div', 'rserve_"+i+"_if');");
+    form.onsubmit = new Function('event', "document.getElementById('rserve_"+i+"_ta').value=aceeditors["+i+"].getValue(); document.getElementById('rserve_"+i+"_div').setAttribute('style','display:block;'); ShowR('rserve_"+i+"_div', 'rserve_"+i+"_if');");
 
     form_ta = document.createElement('textarea');
     form_ta.id = 'rserve_'+i+'_ta';
