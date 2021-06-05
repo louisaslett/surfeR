@@ -1,17 +1,51 @@
 <html>
 <head>
-<title>Test R posting</title>
+<title>Test Rserve posting</title>
 </head>
 <body>
 
-<form action="index.php" method="post" target="rserve1">
-  <textarea name="code" rows="4" cols="50">
-    rnorm(10)
-  </textarea>
-  <input type="submit" value="Do Stuff!">
-</form>
+<p>This is the first example of a super simple embedded script:</p>
+<pre rserve>
+rnorm(10)
+</pre>
+Then let's add more:
+<pre rserve>
+runs <- 100000
+#runif samples from a uniform distribution
+xs <- runif(runs,min=-0.5,max=0.5)
+ys <- runif(runs,min=-0.5,max=0.5)
+in.circle <- xs^2 + ys^2 <= 0.5^2
+mc.pi <- (sum(in.circle)/runs)*4
+plot(xs,ys,pch='.',col=ifelse(in.circle,"blue","grey")
+     ,xlab='',ylab='',asp=1,
+     main=paste("MC Approximation of Pi =",mc.pi))
+     plot(xs,ys,pch='.',col=ifelse(in.circle,"red","grey")
+     ,xlab='',ylab='',asp=1,
+     main=paste("MC Approximation of Pi =",mc.pi))
+     plot(xs,ys,pch='.',col=ifelse(in.circle,"blue","orange")
+     ,xlab='',ylab='',asp=1,
+     main=paste("MC Approximation of Pi =",mc.pi))
+     plot(xs,ys,pch='.',col=ifelse(in.circle,"pink","grey")
+     ,xlab='',ylab='',asp=1,
+     main=paste("MC Approximation of Pi =",mc.pi))
+     plot(xs,ys,pch='.',col=ifelse(in.circle,"blue","grey")
+     ,xlab='',ylab='',asp=1,
+     main=paste("MC Approximation of Pi =",mc.pi))
+     plot(xs,ys,pch='.',col=ifelse(in.circle,"blue","grey")
+     ,xlab='',ylab='',asp=1,
+     main=paste("MC Approximation of Pi =",mc.pi))
+</pre>
+Cool or what!?
 
-<iframe name="rserve1" src=""></iframe>
+<script src="ace-min.js" charset="utf-8"></script>
+<script src="rserve-min.js" charset="utf-8"></script>
+<script>
+  Rserve('index.php');
+  // If doing cross site you could instead specify the full domain
+  // For example, I use:
+  //   Rserve('https://rserve.louisaslett.com/index.php');
+</script>
+
 
 </body>
 </html>
