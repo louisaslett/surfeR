@@ -3,11 +3,20 @@
 # Setup configuration options here ...
 
 # Set the following to the domain you want to restrict access from.
-# Note this is only a minor hurdle to other sites submitting code to run and
-# not absolute protection.
+# Note this is *not* absolute protection and could be circumvented by a
+# determined coder.
+# Setting it will rely on browser's cross-site scripting rules to deny access
+# by setting the domain of the cookie: therefore the page you embed the code
+# editor on and the domain of the Rserve server must match (at the top level at
+# least).
+# Note that Chrome will require you to run entirely over SSL (main page and
+# Rserve page) in order to use this feature.
 # eg, I use:
 # DOMAIN=".louisaslett.com"
-# but you can leave empty to eliminiate this behaviour
+# so that I can embed code editors on www.louisaslett.com and run R code on
+# rserve.louisaslett.com
+# You can leave empty to eliminiate this behaviour, though this would allow
+# anyone to direct code to run from their webpage on your server.
 DOMAIN=""
 
 # What is the maximum runtime to allow?
