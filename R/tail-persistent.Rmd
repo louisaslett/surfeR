@@ -1,2 +1,6 @@
 
 ```
+
+```{r, include=FALSE}
+save.image(file = "PERSISTENTFILE")
+```

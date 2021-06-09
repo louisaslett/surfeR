@@ -24,9 +24,10 @@ mv $runwith /rserve/www-run/2/$f
 touch /rserve/www-run/2/$f
 
 if [[ $runwith == *"/persistent/"* ]]; then
-  cat /rserve/R/head-persistent.Rmd > $d/${f%.R}.Rmd
+  [ -f /rserve/www-run/0/$u.RData ] && cp /rserve/www-run/0/$u.RData $d
+  sed "s/PERSISTENTFILE/$u.RData/g" /rserve/R/head-persistent.Rmd > $d/${f%.R}.Rmd
   cat /rserve/www-run/2/$f >> $d/${f%.R}.Rmd
-  cat /rserve/R/tail-persistent.Rmd >> $d/${f%.R}.Rmd
+  sed "s/PERSISTENTFILE/$u.RData/g" /rserve/R/tail-persistent.Rmd >> $d/${f%.R}.Rmd
 else
   cat /rserve/R/head-ephemeral.Rmd > $d/${f%.R}.Rmd
   cat /rserve/www-run/2/$f >> $d/${f%.R}.Rmd
@@ -45,6 +46,9 @@ else
   if [ -f "$d/${f%.R}.html" ]
   then
     mv $d/${f%.R}.html /rserve/www-run/3
+    if [[ $runwith == *"/persistent/"* ]]; then
+      [ -f $d/$u.RData ] && cp $d /rserve/www-run/0/$u.RData
+    fi
   else
     echo "Sorry, it looks like R might have crashed while running your code! [status=$retval]" > /rserve/www-run/3/${f%.R}.html
   fi

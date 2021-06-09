@@ -25,7 +25,7 @@ docker pull rocker/ml-verse:4.0.5
 docker pull php:apache
 
 # Setup directories
-mkdir -p /rserve/Rrunning /rserve/www-run/1/ephemeral /rserve/www-run/1/persistent /rserve/www-run/2 /rserve/www-run/3
+mkdir -p /rserve/Rrunning /rserve/www-run/0 /rserve/www-run/1/ephemeral /rserve/www-run/1/persistent /rserve/www-run/2 /rserve/www-run/3
 cp $SCRIPT_DIR/Rserve.sh /rserve
 cp $SCRIPT_DIR/config.sh /rserve
 cp -r $SCRIPT_DIR/R /rserve
