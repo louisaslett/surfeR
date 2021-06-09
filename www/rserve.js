@@ -158,6 +158,12 @@ input:checked + .rserveslider:before {
 
     tmp = document.createElement('input');
     tmp.type = 'hidden';
+    tmp.name = 'block';
+    tmp.value = RservePad(i, 3);
+    form.append(tmp);
+
+    tmp = document.createElement('input');
+    tmp.type = 'hidden';
     tmp.name = 'sess';
     tmp.value = sessionname;
     form.append(tmp);
@@ -324,4 +330,9 @@ function RserveUuidv4() { // From https://stackoverflow.com/a/2117523/1055918
   return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   );
+}
+
+function RservePad(num, size) { // From https://stackoverflow.com/a/2998822
+  var s = "000000000" + num;
+  return s.substr(s.length-size);
 }
