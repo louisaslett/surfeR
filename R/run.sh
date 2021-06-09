@@ -47,7 +47,7 @@ else
   then
     mv $d/${f%.R}.html /rserve/www-run/3
     if [[ $runwith == *"/persistent/"* ]]; then
-      [ -f $d/$u.RData ] && cp $d /rserve/www-run/0/$u.RData
+      [ -f $d/$u.RData ] && cp $d/$u.RData /rserve/www-run/0/$u.RData
     fi
   else
     echo "Sorry, it looks like R might have crashed while running your code! [status=$retval]" > /rserve/www-run/3/${f%.R}.html
