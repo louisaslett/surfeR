@@ -8,10 +8,10 @@ pending=(`find /rserve/www-run/1 -type f -printf "%f %p\n" | sort | cut -f 2 -d 
 runwith=""
 for check in "${pending[@]}"
 do
-  ff=${check##*/}
-  uu=${ff##*-}; uu=${uu%.R}
-  dd=/rserve/Rrunning/$uu
-  if [ ! -d "/path/to/dir" ] then
+  f=${check##*/}
+  u=${f##*-}; u=${u%.R}
+  d=/rserve/Rrunning/$u
+  if [ ! -d $d ]; then
     runwith=$check
     break
   fi
@@ -19,15 +19,11 @@ done
 # If there are none then exit
 [ -z "$runwith" ] && exit 0
 
-f=${runwith##*/}
-u=${f##*-}; u=${u%.R}
-d=/rserve/Rrunning/$u
-
 mkdir $d
-mv ${runwith} /rserve/www-run/2/$f
+mv $runwith /rserve/www-run/2/$f
 touch /rserve/www-run/2/$f
 
-if [[ ${runwith} == *"/persistent/"* ]]; then
+if [[ $runwith == *"/persistent/"* ]]; then
   cat /rserve/R/head-persistent.Rmd > $d/${f%.R}.Rmd
   cat /rserve/www-run/2/$f >> $d/${f%.R}.Rmd
   cat /rserve/R/tail-persistent.Rmd >> $d/${f%.R}.Rmd
