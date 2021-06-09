@@ -18,12 +18,12 @@ shopt -s nullglob
 chmod u+x /rserve/R/*.sh
 while true
 do
-  pending=(/rserve/www-run/1/*)
+  pending=(/rserve/www-run/1/persistent/* /rserve/www-run/1/ephemeral/*)
   while [ ${#pending[@]} -eq 0 ]
   do
     #inotifywait -m /rserve/www-run/1 -e create -e moved_to | echo "found"
     sleep 1
-    pending=(/rserve/www-run/1/*)
+    pending=(/rserve/www-run/1/persistent/* /rserve/www-run/1/ephemeral/*)
   done
 
   # Check how many containers are running

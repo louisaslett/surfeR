@@ -2,17 +2,40 @@
 
 . /rserve/config.sh
 
-pending=(/rserve/www-run/1/*)
-f=${pending[0]##*/}
-d=/rserve/Rrunning/${f%.R}
+# Get pending queue, sorted by filename, ignoring ephemeral or persistent status
+pending=(`find /rserve/www-run/1 -type f -printf "%f %p\n" | sort | cut -f 2 -d " "`)
+# Look for a UUID that does not have a running script
+runwith=""
+for check in "${pending[@]}"
+do
+  ff=${check##*/}
+  uu=${ff##*-}; uu=${uu%.R}
+  dd=/rserve/Rrunning/$uu
+  if [ ! -d "/path/to/dir" ] then
+    runwith=$check
+    break
+  fi
+done
+# If there are none then exit
+[ -z "$runwith" ] && exit 0
+
+f=${runwith##*/}
+u=${f##*-}; u=${u%.R}
+d=/rserve/Rrunning/$u
 
 mkdir $d
-mv /rserve/www-run/1/$f /rserve/www-run/2/$f
+mv ${runwith} /rserve/www-run/2/$f
 touch /rserve/www-run/2/$f
 
-cat /rserve/R/head.Rmd > $d/${f%.R}.Rmd
-cat /rserve/www-run/2/$f >> $d/${f%.R}.Rmd
-cat /rserve/R/tail.Rmd >> $d/${f%.R}.Rmd
+if [[ ${runwith} == *"/persistent/"* ]]; then
+  cat /rserve/R/head-persistent.Rmd > $d/${f%.R}.Rmd
+  cat /rserve/www-run/2/$f >> $d/${f%.R}.Rmd
+  cat /rserve/R/tail-persistent.Rmd >> $d/${f%.R}.Rmd
+else
+  cat /rserve/R/head-ephemeral.Rmd > $d/${f%.R}.Rmd
+  cat /rserve/www-run/2/$f >> $d/${f%.R}.Rmd
+  cat /rserve/R/tail-ephemeral.Rmd >> $d/${f%.R}.Rmd
+fi
 cp /rserve/R/hidehead.css $d
 
 timeout --kill-after=10s $MAXRUNTIME docker run --rm -v /rserve/Rrunning:/rserve/Rrunning rocker/ml-verse:4.0.5 timeout --kill-after=10s $MAXRUNTIME Rscript -e "rmarkdown::render('$d/${f%.R}.Rmd')"
