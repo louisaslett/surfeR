@@ -68,6 +68,7 @@ function surfeR(url, persistent, sessionname) {
 .surfeRswitch {
   position: relative;
   display: inline-block;
+  vertical-align: middle;
   width: 40px;
   height: 24px;
   margin-left: 2em;
