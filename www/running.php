@@ -45,25 +45,26 @@ if(count(glob("/3/*-$blockid-$uuid.html"))>0) {
 }
 
 # Otherwise, discover if we are queuing or running
-if(array_key_exists('i', $_GET)) {
-  $i = $_GET['i']+1;
+if(array_key_exists('strt', $_GET)) {
+  $strt = $_GET['strt'];
 } else {
-  $i = 0;
+  $strt = time();
 }
 if(count(glob("/2/*-$blockid-$uuid.R"))>0) {
-  header('Refresh:1; url=running.php?i='.urlencode($i).'&block='.$blockid.'&uuid='.urlencode($_GET['uuid']).'&sess='.urlencode($_GET['sess']));
+  header('Refresh:1; url=running.php?strt='.urlencode($strt).'&block='.$blockid.'&uuid='.urlencode($_GET['uuid']).'&sess='.urlencode($_GET['sess']));
   $runtime = time()-filemtime(glob("/2/*-$blockid-$uuid.R")[0]);
   echo "Your code is currently executing!  Running for $runtime seconds ... (max allowed $MAXRUNTIME)";
   exit();
 }
 if(count(glob("/1/persistent/*-$blockid-$uuid.R"))+count(glob("/1/ephemeral/*-$blockid-$uuid.R"))>0) {
-  header('Refresh:1; url=running.php?i='.urlencode($i).'&block='.$blockid.'&uuid='.urlencode($_GET['uuid']).'&sess='.urlencode($_GET['sess']));
   $d = array_merge(scandir("/1/persistent"),scandir("/1/ephemeral"));
   sort($d);
   array_splice($d, 0, 4);
   $pos = array_keys(array_filter($d, fn($d2) => str_contains($d2,"-$blockid-$uuid.R")))[0]+1;
   $tot = count($d);
-  echo "Your code is in the queue waiting to run, please wait!  Currently in position $pos of $tot ... (you have been in the queue for $i seconds)";
+  $runtime = time()-$strt;
+  header('Refresh:'.$pos.'; url=running.php?strt='.urlencode($strt).'&block='.$blockid.'&uuid='.urlencode($_GET['uuid']).'&sess='.urlencode($_GET['sess']));
+  echo "<script>var secs = $runtime; setInterval(updT, 1000); function updT() { ++secs; document.getElementById('secs').innerHTML = secs+'.'; }</script>Your code is in the queue waiting to run, please wait!  Currently in position $pos of $tot ... (you have been in the queue for <span id='secs'>$runtime</span> seconds)";
   exit();
 }
 ?>

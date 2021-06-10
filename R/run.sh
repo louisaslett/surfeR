@@ -1,4 +1,4 @@
-surfeR#!/bin/bash
+#!/bin/bash
 
 . /surfeR/config.sh
 
