@@ -1,6 +1,6 @@
 #!/bin/bash
 
-. /rserve/config.sh
+. /surfeR/config.sh
 
-cd /rserve/www-run
+cd /surfeR/www-run
 find . -maxdepth 3 -mmin +$GCTIMEOUT -type f -delete

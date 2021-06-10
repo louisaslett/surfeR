@@ -30,14 +30,14 @@ fi
 docker pull php:apache
 
 # Setup directories
-mkdir -p /rserve/Rrunning /rserve/www-run/0 /rserve/www-run/1/ephemeral /rserve/www-run/1/persistent /rserve/www-run/2 /rserve/www-run/3
-cp $SCRIPT_DIR/Rserve.sh /rserve
-cp $SCRIPT_DIR/config.sh /rserve
-cp -r $SCRIPT_DIR/R /rserve
-cp -r $SCRIPT_DIR/www /rserve
-chown -R www-data:www-data /rserve
-chmod -R 755 /rserve
-echo -e "<?php\n\n\$DOMAIN='$DOMAIN';\n\$MAXRUNTIME='$MAXRUNTIME';\n\n?>" > /rserve/www/config.php
+mkdir -p /surfeR/Rrunning /surfeR/www-run/0 /surfeR/www-run/1/ephemeral /surfeR/www-run/1/persistent /surfeR/www-run/2 /surfeR/www-run/3
+cp $SCRIPT_DIR/surfeR.sh /surfeR
+cp $SCRIPT_DIR/config.sh /surfeR
+cp -r $SCRIPT_DIR/R /surfeR
+cp -r $SCRIPT_DIR/www /surfeR
+chown -R www-data:www-data /surfeR
+chmod -R 755 /surfeR
+echo -e "<?php\n\n\$DOMAIN='$DOMAIN';\n\$MAXRUNTIME='$MAXRUNTIME';\n\n?>" > /surfeR/www/config.php
 
 echo "Starting server ..."
-/rserve/Rserve.sh > /dev/null 2>/dev/null &
+/surfeR/surfeR.sh > /dev/null 2>/dev/null &

@@ -1,15 +1,15 @@
 <html>
 <head>
-<title>Test Rserve posting</title>
+<title>Test surfeR posting</title>
 </head>
 <body>
 
 <p>This is the first example of a super simple embedded script:</p>
-<pre rserve>
+<pre surfeR>
 rnorm(10)
 </pre>
 Then let's add more:
-<pre rserve>
+<pre surfeR>
 runs <- 100000
 #runif samples from a uniform distribution
 xs <- runif(runs,min=-0.5,max=0.5)
@@ -40,10 +40,10 @@ Cool or what!?
 <script src="ace-min.js" charset="utf-8"></script>
 <script src="rserve-min.js" charset="utf-8"></script>
 <script>
-  Rserve('index.php');
+  surfeR('index.php');
   // If doing cross site you could instead specify the full domain
   // For example, I use:
-  //   Rserve('https://rserve.louisaslett.com/index.php');
+  //   surfeR('https://surfer.louisaslett.com/index.php');
 </script>
 
 

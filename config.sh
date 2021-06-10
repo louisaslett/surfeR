@@ -28,14 +28,14 @@ GCTIMEOUT=30
 # determined coder.
 # Setting it will rely on browser's cross-site scripting rules to deny access
 # by setting the domain of the cookie: therefore the page you embed the code
-# editor on and the domain of the Rserve server must match (at the top level at
+# editor on and the domain of the surfeR server must match (at the top level at
 # least).
 # Note that Chrome will require you to run entirely over SSL (main page and
-# Rserve page) in order to use this feature.
+# surfeR page) in order to use this feature.
 # eg, I use:
 # DOMAIN=".louisaslett.com"
 # so that I can embed code editors on www.louisaslett.com and run R code on
-# rserve.louisaslett.com
+# surfer.louisaslett.com
 # You can leave empty to eliminiate this behaviour, though this would allow
 # anyone to direct code to run from their webpage on your server.
 DOMAIN=""

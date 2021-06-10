@@ -1,42 +1,42 @@
 #!/bin/bash
 
 # Run with:
-# /rserve/Rserve.sh > /dev/null 2>/dev/null &
+# /surfeR/surfeR.sh > /dev/null 2>/dev/null &
 
-chmod u+x /rserve/config.sh
-. /rserve/config.sh
+chmod u+x /surfeR/config.sh
+. /surfeR/config.sh
 
 docker stop php
 docker run --rm -d -p 80:80 --name php \
-  -v /rserve/www:/var/www/html \
-  -v /rserve/www-run/1:/1 \
-  -v /rserve/www-run/2:/2 \
-  -v /rserve/www-run/3:/3 \
+  -v /surfeR/www:/var/www/html \
+  -v /surfeR/www-run/1:/1 \
+  -v /surfeR/www-run/2:/2 \
+  -v /surfeR/www-run/3:/3 \
   php:apache
 
 shopt -s nullglob
-chmod u+x /rserve/R/*.sh
+chmod u+x /surfeR/R/*.sh
 while true
 do
-  pending=(/rserve/www-run/1/persistent/* /rserve/www-run/1/ephemeral/*)
+  pending=(/surfeR/www-run/1/persistent/* /surfeR/www-run/1/ephemeral/*)
   while [ ${#pending[@]} -eq 0 ]
   do
-    #inotifywait -m /rserve/www-run/1 -e create -e moved_to | echo "found"
+    #inotifywait -m /surfeR/www-run/1 -e create -e moved_to | echo "found"
     sleep 1
-    pending=(/rserve/www-run/1/persistent/* /rserve/www-run/1/ephemeral/*)
+    pending=(/surfeR/www-run/1/persistent/* /surfeR/www-run/1/ephemeral/*)
   done
 
   # Check how many containers are running
   # Keep looping until we have capacity
-  procs=(/rserve/Rrunning/*)
+  procs=(/surfeR/Rrunning/*)
   while [ ${#procs[@]} -gt $((MAXSIMUL-1)) ]
   do
     echo "full"
     sleep 1
-    procs=(/rserve/Rrunning/*)
+    procs=(/surfeR/Rrunning/*)
   done
 
-  /rserve/R/run.sh &
-  /rserve/R/tidy.sh &
+  /surfeR/R/run.sh &
+  /surfeR/R/tidy.sh &
   sleep 1
 done

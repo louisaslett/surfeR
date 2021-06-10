@@ -1,4 +1,4 @@
-# Rserve
+# surfeR
 
 This is designed to enable remote execution of R code for embedding in a web page.  It is currently alpha software, so there is only a quick start guide.  I am currently extensively testing it for a University course I am writing and once any kinks are ironed out this guide will become more extensive and include working examples.  In the meantime it is mostly made available for brave tinkerers!
 
@@ -9,25 +9,25 @@ This guide assumes an Ubuntu 20.04 LTS install, such as you would get with a [Di
 Once logged in, pull this repository:
 
 ```{bash}
-git clone https://github.com/louisaslett/Rserve.git
+git clone https://github.com/louisaslett/surfeR.git
 ```
 
 Edit and make any desired changes to the configuration (it will run fine leaving all defaults):
 
 ```{bash}
-nano Rserve/config.sh
+nano surfeR/config.sh
 ```
 
 Deploy and start the server:
 
 ```{bash}
-bash Rserve/setup.sh
+bash surfeR/setup.sh
 ```
 
-If the server reboots, you can start the Rserve environment again by running
+If the server reboots, you can start the surfeR environment again by running
 
 ```{bash}
-/rserve/Rserve.sh
+/surfeR/surfeR.sh
 ```
 
 Then, to test the setup, visit http://your-server-ip-address/test.html in a browser to test out the code.  Note that cookies tie your session, so if you want to test the queuing mechanism, you will need to launch multiple incognito/private browser sessions to do so.

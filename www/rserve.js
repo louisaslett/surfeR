@@ -7,10 +7,10 @@ var riframestyles = {};
 var rdivstyles = {};
 var aceeditors = {};
 
-function Rserve(url, persistent, sessionname) {
+function surfeR(url, persistent, sessionname) {
   var styles = document.createElement('style');
   styles.innerHTML = `
-.rserveshowhide .rservezoomunzoom {
+.surfeRshowhide .surfeRzoomunzoom {
   padding: 8px 16px;
   text-align: center;
   text-decoration: none;
@@ -21,24 +21,24 @@ function Rserve(url, persistent, sessionname) {
   cursor: pointer;
   border-radius: 25%;
 }
-.rserveshowhide {
+.surfeRshowhide {
   background-color: white;
   border: 2px solid #e7e7e7;
   color: black;
 }
-.rserveshowhide:hover {
+.surfeRshowhide:hover {
   background-color: #e7e7e7;
 }
-.rservezoomunzoom {
+.surfeRzoomunzoom {
   background-color: white;
   border: 2px solid #006600;
   color: black;
 }
-.rservezoomunzoom:hover {
+.surfeRzoomunzoom:hover {
   background-color: #006600;
   color: white;
 }
-.rserveshowhide:disabled,.rserveshowhide[disabled] {
+.surfeRshowhide:disabled,.surfeRshowhide[disabled] {
   background:
   repeating-linear-gradient(
     45deg,
@@ -53,19 +53,19 @@ function Rserve(url, persistent, sessionname) {
     #999
   );
 }
-.rserveout {
+.surfeRout {
   border-style: dashed;
   border-color: #999999;
   padding: 5px;
 }
-.rserveif {
+.surfeRif {
   margin-top: 5px;
 }
 .aceeditor {
   height: 80px;
   width: 100%;
 }
-.rserveswitch {
+.surfeRswitch {
   position: relative;
   display: inline-block;
   width: 40px;
@@ -73,12 +73,12 @@ function Rserve(url, persistent, sessionname) {
   margin-left: 2em;
   margin-right: 0.5em;
 }
-.rserveswitch input {
+.surfeRswitch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
-.rserveslider {
+.surfeRslider {
   position: absolute;
   cursor: pointer;
   top: 0;
@@ -89,7 +89,7 @@ function Rserve(url, persistent, sessionname) {
   -webkit-transition: .4s;
   transition: .4s;
 }
-.rserveslider:before {
+.surfeRslider:before {
   position: absolute;
   content: "";
   height: 16px;
@@ -100,29 +100,29 @@ function Rserve(url, persistent, sessionname) {
   -webkit-transition: .4s;
   transition: .4s;
 }
-input:checked + .rserveslider {
+input:checked + .surfeRslider {
   background-color: #006600;
 }
-input:focus + .rserveslider {
+input:focus + .surfeRslider {
   box-shadow: 0 0 1px #006600;
 }
-input:checked + .rserveslider:before {
+input:checked + .surfeRslider:before {
   -webkit-transform: translateX(16px);
   -ms-transform: translateX(16px);
   transform: translateX(16px);
 }
-.rserveslider.round {
+.surfeRslider.round {
   border-radius: 34px;
 }
-.rserveslider.round:before {
+.surfeRslider.round:before {
   border-radius: 50%;
 }
 `;
   document.head.appendChild(styles);
 
-  var uuid = RserveUuidv4();
+  var uuid = surfeRuuidv4();
 
-  var rs = document.querySelectorAll('[rserve]');
+  var rs = document.querySelectorAll('[surfeR]');
 
   var rs_new;
   var form, form_tog;
@@ -130,12 +130,12 @@ input:checked + .rserveslider:before {
   for(var i=0; i<rs.length; i++) {
     // Replace pre with div for Ace editor and give id
     rs_new = document.createElement('div');
-    rs_new.id = 'rserve_'+i+'_code';
+    rs_new.id = 'surfeR_'+i+'_code';
     rs_new.className = 'aceeditor';
     rs_new.innerHTML = rs[i].innerHTML;
     rs[i].parentNode.replaceChild(rs_new, rs[i]);
 
-    aceeditors[i] = ace.edit('rserve_'+i+'_code', {
+    aceeditors[i] = ace.edit('surfeR_'+i+'_code', {
       theme: "ace/theme/monokai",
       mode: "ace/mode/r",
       maxLines: 30,
@@ -147,11 +147,11 @@ input:checked + .rserveslider:before {
     form = document.createElement('form');
     form.action = url;
     form.method = 'POST';
-    form.target = 'rserve_'+i+'_if';
-    form.onsubmit = new Function('event', "RserveSubmit("+i+");");
+    form.target = 'surfeR_'+i+'_if';
+    form.onsubmit = new Function('event', "surfeRsubmit("+i+");");
 
     tmp = document.createElement('textarea');
-    tmp.id = 'rserve_'+i+'_ta';
+    tmp.id = 'surfeR_'+i+'_ta';
     tmp.name = 'code';
     tmp.style.display = 'none';
     form.append(tmp);
@@ -159,7 +159,7 @@ input:checked + .rserveslider:before {
     tmp = document.createElement('input');
     tmp.type = 'hidden';
     tmp.name = 'block';
-    tmp.value = RservePad(i, 3);
+    tmp.value = surfeRpad(i, 3);
     form.append(tmp);
 
     tmp = document.createElement('input');
@@ -175,39 +175,39 @@ input:checked + .rserveslider:before {
     form.append(tmp);
 
     tmp = document.createElement('input');
-    tmp.id = 'rserve_'+i+'_submit';
-    tmp.setAttribute('rserve_submit', '');
+    tmp.id = 'surfeR_'+i+'_submit';
+    tmp.setAttribute('surfeR_submit', '');
     tmp.type = 'submit';
-    tmp.className = 'rserveshowhide';
+    tmp.className = 'surfeRshowhide';
     tmp.value = '▶️ Run code!';
     form.append(tmp);
 
     form_tog = document.createElement('label');
-    form_tog.className = 'rserveswitch';
+    form_tog.className = 'surfeRswitch';
     tmp = document.createElement('input');
-    tmp.id = 'rserve_'+i+'_togper';
+    tmp.id = 'surfeR_'+i+'_togper';
     tmp.name = 'persistent'
-    tmp.setAttribute('rserve_togper', '')
+    tmp.setAttribute('surfeR_togper', '')
     tmp.type = 'checkbox';
     tmp.checked = persistent;
-    tmp.onchange = new Function('event', "RserveTogglePersist('rserve_"+i+"_togper');");
+    tmp.onchange = new Function('event', "surfeRtoggle('surfeR_"+i+"_togper');");
     form_tog.append(tmp);
     tmp = document.createElement('span');
-    tmp.className = 'rserveslider round';
+    tmp.className = 'surfeRslider round';
     form_tog.append(tmp);
     form.append(form_tog);
     tmp = document.createElement('span');
     tmp.innerHTML = 'Persistent';
     form.append(tmp);
     tmp = document.createElement('input');
-    tmp.id = 'rserve_'+i+'_runprev';
-    tmp.setAttribute('rserve_runprev', '')
+    tmp.id = 'surfeR_'+i+'_runprev';
+    tmp.setAttribute('surfeR_runprev', '')
     tmp.type = 'button';
-    tmp.className = 'rserveshowhide';
+    tmp.className = 'surfeRshowhide';
     tmp.value = '⏬️ Run previous';
     tmp.style.marginLeft = '1em';
     tmp.style.display = (persistent & i>0 ? '' : 'none');
-    tmp.onclick = new Function('event', "RserveRunUpto(0,"+i+");");
+    tmp.onclick = new Function('event', "surfeRrunupto(0,"+i+");");
     form.append(tmp);
 
 
@@ -215,40 +215,40 @@ input:checked + .rserveslider:before {
 
     // Create output area
     out = document.createElement('div');
-    out.className = 'rserveout';
-    out.id = 'rserve_'+i+'_div';
+    out.className = 'surfeRout';
+    out.id = 'surfeR_'+i+'_div';
     out.style.display = 'none';
 
     tmp = document.createElement('button');
-    tmp.className = 'rservezoomunzoom';
-    tmp.onclick = new Function('event', "RserveZoomR('rserve_"+i+"_div', 'rserve_"+i+"_if');");
+    tmp.className = 'surfeRzoomunzoom';
+    tmp.onclick = new Function('event', "surfeRzoom('surfeR_"+i+"_div', 'surfeR_"+i+"_if');");
     tmp.innerHTML = '🔎 <tt>Zoom</tt>';
     out.append(tmp);
 
     tmp = document.createElement('button');
-    tmp.className = 'rservezoomunzoom';
-    tmp.onclick = new Function('event', "RserveUnZoomR('rserve_"+i+"_div', 'rserve_"+i+"_if');");
+    tmp.className = 'surfeRzoomunzoom';
+    tmp.onclick = new Function('event', "surfeRunzoom('surfeR_"+i+"_div', 'surfeR_"+i+"_if');");
     tmp.innerHTML = '🔎 <tt>UnZoom</tt>';
     tmp.style.display = 'none';
     out.append(tmp);
 
     tmp = document.createElement('button');
-    tmp.className = 'rserveshowhide';
-    tmp.onclick = new Function('event', "RserveHideR('rserve_"+i+"_div', 'rserve_"+i+"_if');");
+    tmp.className = 'surfeRshowhide';
+    tmp.onclick = new Function('event', "surfeRhide('surfeR_"+i+"_div', 'surfeR_"+i+"_if');");
     tmp.innerHTML = '🙈 <tt>Hide</tt>';
     out.append(tmp);
 
     tmp = document.createElement('button');
-    tmp.className = 'rserveshowhide';
-    tmp.onclick = new Function('event', "RserveShowR('rserve_"+i+"_div', 'rserve_"+i+"_if');");
+    tmp.className = 'surfeRshowhide';
+    tmp.onclick = new Function('event', "surfeRshow('surfeR_"+i+"_div', 'surfeR_"+i+"_if');");
     tmp.innerHTML = '👀 <tt>Show</tt>';
     tmp.style.display = 'none';
     out.append(tmp);
 
     tmp = document.createElement('iframe');
-    tmp.className = 'rserveif';
-    tmp.id = 'rserve_'+i+'_if';
-    tmp.name = 'rserve_'+i+'_if';
+    tmp.className = 'surfeRif';
+    tmp.id = 'surfeR_'+i+'_if';
+    tmp.name = 'surfeR_'+i+'_if';
     tmp.width = '100%';
     out.append(tmp);
 
@@ -259,40 +259,40 @@ input:checked + .rserveslider:before {
   }
 }
 
-function RserveSubmit(i) {
-  document.getElementById('rserve_'+i+'_submit').setAttribute('disabled', 'disabled');
-  setTimeout("document.getElementById('rserve_"+i+"_submit').removeAttribute('disabled');", 2000);
-  document.getElementById('rserve_'+i+'_ta').value = aceeditors[i].getValue();
-  document.getElementById('rserve_'+i+'_div').setAttribute('style','display:block;');
-  RserveShowR('rserve_'+i+'_div', 'rserve_'+i+'_if');
+function surfeRsubmit(i) {
+  document.getElementById('surfeR_'+i+'_submit').setAttribute('disabled', 'disabled');
+  setTimeout("document.getElementById('surfeR_"+i+"_submit').removeAttribute('disabled');", 2000);
+  document.getElementById('surfeR_'+i+'_ta').value = aceeditors[i].getValue();
+  document.getElementById('surfeR_'+i+'_div').setAttribute('style','display:block;');
+  surfeRshow('surfeR_'+i+'_div', 'surfeR_'+i+'_if');
 }
 
-function RserveRunUpto(i,n) {
-  document.getElementById('rserve_'+n+'_runprev').setAttribute('disabled', 'disabled');
-  document.getElementById('rserve_'+i+'_runprev').setAttribute('disabled', 'disabled');
-  setTimeout("document.getElementById('rserve_"+i+"_runprev').removeAttribute('disabled');", 2000);
-  var fm = document.querySelectorAll('[rserve_submit]');
+function surfeRrunupto(i,n) {
+  document.getElementById('surfeR_'+n+'_runprev').setAttribute('disabled', 'disabled');
+  document.getElementById('surfeR_'+i+'_runprev').setAttribute('disabled', 'disabled');
+  setTimeout("document.getElementById('surfeR_"+i+"_runprev').removeAttribute('disabled');", 2000);
+  var fm = document.querySelectorAll('[surfeR_submit]');
   if(i<n && i<fm.length) {
     fm[i].click();
     if(i+1<n) {
-      setTimeout("RserveRunUpto("+(i+1)+","+n+")", 500);
+      setTimeout("surfeRrunupto("+(i+1)+","+n+")", 500);
     } else {
-      setTimeout("document.getElementById('rserve_"+n+"_runprev').removeAttribute('disabled');", 2000);
+      setTimeout("document.getElementById('surfeR_"+n+"_runprev').removeAttribute('disabled');", 2000);
     }
   }
 }
 
-function RserveTogglePersist(cb) {
+function surfeRtoggle(cb) {
   var ck = document.getElementById(cb).checked;
-  var tog = document.querySelectorAll('[rserve_togper]');
-  var run = document.querySelectorAll('[rserve_runprev]');
+  var tog = document.querySelectorAll('[surfeR_togper]');
+  var run = document.querySelectorAll('[surfeR_runprev]');
   for(var i=0; i<tog.length; i++) {
     tog[i].checked = ck;
     run[i].style.display = (ck & i>0 ? '' : 'none');
   }
 }
 
-function RserveZoomR(rdiv, riframe) {
+function surfeRzoom(rdiv, riframe) {
   document.getElementById(rdiv).setAttribute('style', 'position: fixed; z-index: 1000; top: 50px; right: 50px; bottom: 50px; left: 50px; background-color: rgba(255,255,255,1); box-shadow: 5px 10px 8px #888888;');
   var divstyle = window.getComputedStyle(document.getElementById(rdiv), null);
   var ifstyle = window.getComputedStyle(document.getElementById(riframe), null);
@@ -303,7 +303,7 @@ function RserveZoomR(rdiv, riframe) {
   document.getElementById(rdiv).getElementsByTagName("BUTTON")[1].style.display='';
 }
 
-function RserveUnZoomR(rdiv, riframe) {
+function surfeRunzoom(rdiv, riframe) {
   document.getElementById(rdiv).setAttribute('style', rdivstyles[rdiv]);
   document.getElementById(rdiv).style.display='block';
   var tmp = window.getComputedStyle(document.getElementById(riframe), null).getPropertyValue('display');
@@ -314,25 +314,25 @@ function RserveUnZoomR(rdiv, riframe) {
   document.getElementById(rdiv).getElementsByTagName("BUTTON")[0].style.display='';
 }
 
-function RserveHideR(rdiv, riframe) {
+function surfeRhide(rdiv, riframe) {
   document.getElementById(riframe).style.display='none';
   document.getElementById(rdiv).getElementsByTagName("BUTTON")[2].style.display='none';
   document.getElementById(rdiv).getElementsByTagName("BUTTON")[3].style.display='';
 }
 
-function RserveShowR(rdiv, riframe) {
+function surfeRshow(rdiv, riframe) {
   document.getElementById(riframe).style.display='';
   document.getElementById(rdiv).getElementsByTagName("BUTTON")[3].style.display='none';
   document.getElementById(rdiv).getElementsByTagName("BUTTON")[2].style.display='';
 }
 
-function RserveUuidv4() { // From https://stackoverflow.com/a/2117523/1055918
+function surfeRuuidv4() { // From https://stackoverflow.com/a/2117523/1055918
   return ([1e7]+-1e3+-4e3+-8e3+-1e11).replace(/[018]/g, c =>
     (c ^ crypto.getRandomValues(new Uint8Array(1))[0] & 15 >> c / 4).toString(16)
   );
 }
 
-function RservePad(num, size) { // From https://stackoverflow.com/a/2998822
+function surfeRpad(num, size) { // From https://stackoverflow.com/a/2998822
   var s = "000000000" + num;
   return s.substr(s.length-size);
 }

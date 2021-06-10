@@ -1,5 +1,5 @@
 ---
-title: "Rserve: remote R exection (louisaslett/Rserve)"
+title: "surfeR: remote R exection (louisaslett/surfeR)"
 output:
   html_document:
     css: "hidehead.css"
