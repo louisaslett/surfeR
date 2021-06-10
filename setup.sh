@@ -21,7 +21,12 @@ then
 fi
 
 # Pull images
-docker pull rocker/ml-verse:4.0.5
+docker pull $DOCKERIMG
+if [ $? -ne 0 ]; then
+  echo "Error: the image $DOCKERIMG returned an error when attempting to pull.  Aborting setup ..."
+  exit 1
+fi
+
 docker pull php:apache
 
 # Setup directories
