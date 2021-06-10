@@ -7,9 +7,21 @@ var riframestyles = {};
 var rdivstyles = {};
 var aceeditors = {};
 
-function surfeR(url, persistent, sessionname) {
+function surfeR(url, persistent, sessionname, cache) {
   var styles = document.createElement('style');
   styles.innerHTML = `
+.surfeRtagline {
+  text-align: right;
+  font-weight: bold;
+  font-size: 60%;
+  background-color: #666666;
+  -webkit-background-clip: text;
+  -moz-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  cursor: pointer;
+  text-shadow: rgba(245,245,245,0.5) 1px 1px 1px;
+}
 .surfeRshowhide .surfeRzoomunzoom {
   padding: 8px 16px;
   text-align: center;
@@ -129,10 +141,12 @@ input:checked + .surfeRslider:before {
 
   var rs = document.querySelectorAll('[surfeR]');
 
-  var rs_new;
+  var cachesha;
+  var rs_new, tagline;
   var form, form_tog;
   var out, tmp;
   for(var i=0; i<rs.length; i++) {
+
     // Replace pre with div for Ace editor and give id
     rs_new = document.createElement('div');
     rs_new.id = 'surfeR_'+i+'_code';
@@ -147,6 +161,13 @@ input:checked + .surfeRslider:before {
       wrap: true,
       autoScrollEditorIntoView: true
     });
+
+    // Initial tagline
+    tagline = document.createElement('div');
+    tagline.className = 'surfeRtagline';
+    cachesha = surfeRsha256(aceeditors[i].getValue());
+    tagline.innerHTML = '🚀 <span onclick="location.href = \'https://www.louisaslett.com/surfeR/\';">louisaslett.com/surfeR</span>&nbsp;&nbsp;&bull;&nbsp;&nbsp;<span style="border-style: groove; border-width: 1px; border-color: #FFFFFF; padding-left: 2px; padding-right: 2px; font-size: 75%;" onclick="window.prompt(\'Cache hash for original source (Ctrl+C or Cmd+C to copy):\', \''+cachesha+'\');">SHA</span>'
+    rs_new.parentNode.insertBefore(tagline, rs_new);
 
     // Create form
     form = document.createElement('form');
@@ -215,7 +236,6 @@ input:checked + .surfeRslider:before {
     tmp.onclick = new Function('event', "surfeRrunupto(0,"+i+");");
     form.append(tmp);
 
-
     rs_new.parentNode.insertBefore(form, rs_new.nextSibling);
 
     // Create output area
@@ -261,6 +281,11 @@ input:checked + .surfeRslider:before {
 
     // Break
     out.parentNode.insertBefore(document.createElement('br'), out.nextSibling);
+
+    // Check cache
+    if(cache !== undefined) {
+      surfeRcache(cache+cachesha+'.html', i);
+    }
   }
 }
 
@@ -346,6 +371,103 @@ function surfeRpad(num, size) { // From https://stackoverflow.com/a/2998822
   return s.substr(s.length-size);
 }
 
+function surfeRsha256(ascii) { // From https://geraintluff.github.io/sha256/
+	function rightRotate(value, amount) {
+		return (value>>>amount) | (value<<(32 - amount));
+	};
+
+	var mathPow = Math.pow;
+	var maxWord = mathPow(2, 32);
+	var lengthProperty = 'length'
+	var i, j; // Used as a counter across the whole file
+	var result = ''
+
+	var words = [];
+	var asciiBitLength = ascii[lengthProperty]*8;
+
+	//* caching results is optional - remove/add slash from front of this line to toggle
+	// Initial hash value: first 32 bits of the fractional parts of the square roots of the first 8 primes
+	// (we actually calculate the first 64, but extra values are just ignored)
+	var hash = surfeRsha256.h = surfeRsha256.h || [];
+	// Round constants: first 32 bits of the fractional parts of the cube roots of the first 64 primes
+	var k = surfeRsha256.k = surfeRsha256.k || [];
+	var primeCounter = k[lengthProperty];
+	/*/
+	var hash = [], k = [];
+	var primeCounter = 0;
+	//*/
+
+	var isComposite = {};
+	for (var candidate = 2; primeCounter < 64; candidate++) {
+		if (!isComposite[candidate]) {
+			for (i = 0; i < 313; i += candidate) {
+				isComposite[i] = candidate;
+			}
+			hash[primeCounter] = (mathPow(candidate, .5)*maxWord)|0;
+			k[primeCounter++] = (mathPow(candidate, 1/3)*maxWord)|0;
+		}
+	}
+
+	ascii += '\x80' // Append Ƈ' bit (plus zero padding)
+	while (ascii[lengthProperty]%64 - 56) ascii += '\x00' // More zero padding
+	for (i = 0; i < ascii[lengthProperty]; i++) {
+		j = ascii.charCodeAt(i);
+		if (j>>8) return; // ASCII check: only accept characters in range 0-255
+		words[i>>2] |= j << ((3 - i)%4)*8;
+	}
+	words[words[lengthProperty]] = ((asciiBitLength/maxWord)|0);
+	words[words[lengthProperty]] = (asciiBitLength)
+
+	// process each chunk
+	for (j = 0; j < words[lengthProperty];) {
+		var w = words.slice(j, j += 16); // The message is expanded into 64 words as part of the iteration
+		var oldHash = hash;
+		// This is now the undefinedworking hash", often labelled as variables a...g
+		// (we have to truncate as well, otherwise extra entries at the end accumulate
+		hash = hash.slice(0, 8);
+
+		for (i = 0; i < 64; i++) {
+			var i2 = i + j;
+			// Expand the message into 64 words
+			// Used below if
+			var w15 = w[i - 15], w2 = w[i - 2];
+
+			// Iterate
+			var a = hash[0], e = hash[4];
+			var temp1 = hash[7]
+				+ (rightRotate(e, 6) ^ rightRotate(e, 11) ^ rightRotate(e, 25)) // S1
+				+ ((e&hash[5])^((~e)&hash[6])) // ch
+				+ k[i]
+				// Expand the message schedule if needed
+				+ (w[i] = (i < 16) ? w[i] : (
+						w[i - 16]
+						+ (rightRotate(w15, 7) ^ rightRotate(w15, 18) ^ (w15>>>3)) // s0
+						+ w[i - 7]
+						+ (rightRotate(w2, 17) ^ rightRotate(w2, 19) ^ (w2>>>10)) // s1
+					)|0
+				);
+			// This is only used once, so *could* be moved below, but it only saves 4 bytes and makes things unreadble
+			var temp2 = (rightRotate(a, 2) ^ rightRotate(a, 13) ^ rightRotate(a, 22)) // S0
+				+ ((a&hash[1])^(a&hash[2])^(hash[1]&hash[2])); // maj
+
+			hash = [(temp1 + temp2)|0].concat(hash); // We don't bother trimming off the extra ones, they're harmless as long as we're truncating when we do the slice()
+			hash[4] = (hash[4] + temp1)|0;
+		}
+
+		for (i = 0; i < 8; i++) {
+			hash[i] = (hash[i] + oldHash[i])|0;
+		}
+	}
+
+	for (i = 0; i < 8; i++) {
+		for (j = 3; j + 1; j--) {
+			var b = (hash[i]>>(j*8))&255;
+			result += ((b < 16) ? 0 : '') + b.toString(16);
+		}
+	}
+	return result;
+}
+
 function surfeRsetcookie(cname, cvalue, exdays) {
   var d = new Date();
   d.setTime(d.getTime() + (exdays*24*60*60*1000));
@@ -367,4 +489,20 @@ function surfeRgetcookie(cname) {
     }
   }
   return "";
+}
+
+function surfeRcache(address, i) {
+  var httpRequest = new XMLHttpRequest();
+  httpRequest.onreadystatechange = function() {
+    if(httpRequest.readyState === 4) {
+      if(httpRequest.status === 200) {
+        document.getElementById('surfeR_'+i+'_if').srcdoc = httpRequest.responseText;
+        document.getElementById('surfeR_'+i+'_div').setAttribute('style','display:block;');
+        surfeRshow('surfeR_'+i+'_div', 'surfeR_'+i+'_if');
+      } else {
+      }
+    }
+  }
+  httpRequest.open('GET', address);
+  httpRequest.send();
 }
