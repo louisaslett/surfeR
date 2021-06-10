@@ -9,5 +9,5 @@ output:
 knitr::opts_chunk$set(echo = TRUE, comment = NA)
 ```
 
-Ephemeral test
+<!-- Ephemeral -->
 ```{r,echo=FALSE,error=TRUE}

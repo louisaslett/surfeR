@@ -12,5 +12,5 @@ if(file.exists("PERSISTENTFILE")) {
 }
 ```
 
-Persistent test
+<!-- Persistent -->
 ```{r,echo=FALSE,error=TRUE}
