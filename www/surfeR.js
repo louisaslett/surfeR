@@ -120,7 +120,11 @@ input:checked + .surfeRslider:before {
 `;
   document.head.appendChild(styles);
 
-  var uuid = surfeRuuidv4();
+  var uuid = surfeRgetcookie('uuid');
+  if(uuid == "") {
+    uuid = surfeRuuidv4();
+  }
+  surfeRsetcookie('uuid', uuid, 30);
 
   var rs = document.querySelectorAll('[surfeR]');
 
@@ -293,6 +297,8 @@ function surfeRtoggle(cb) {
 }
 
 function surfeRzoom(rdiv, riframe) {
+  if(document.getElementById(rdiv).getElementsByTagName("BUTTON")[2].style.display=='none')
+    surfeRshow(rdiv, riframe);
   document.getElementById(rdiv).setAttribute('style', 'position: fixed; z-index: 1000; top: 50px; right: 50px; bottom: 50px; left: 50px; background-color: rgba(255,255,255,1); box-shadow: 5px 10px 8px #888888;');
   var divstyle = window.getComputedStyle(document.getElementById(rdiv), null);
   var ifstyle = window.getComputedStyle(document.getElementById(riframe), null);
@@ -315,6 +321,8 @@ function surfeRunzoom(rdiv, riframe) {
 }
 
 function surfeRhide(rdiv, riframe) {
+  if(document.getElementById(rdiv).getElementsByTagName("BUTTON")[0].style.display=='none')
+    surfeRunzoom(rdiv, riframe);
   document.getElementById(riframe).style.display='none';
   document.getElementById(rdiv).getElementsByTagName("BUTTON")[2].style.display='none';
   document.getElementById(rdiv).getElementsByTagName("BUTTON")[3].style.display='';
@@ -335,4 +343,27 @@ function surfeRuuidv4() { // From https://stackoverflow.com/a/2117523/1055918
 function surfeRpad(num, size) { // From https://stackoverflow.com/a/2998822
   var s = "000000000" + num;
   return s.substr(s.length-size);
+}
+
+function surfeRsetcookie(cname, cvalue, exdays) {
+  var d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  var expires = "expires="+ d.toUTCString();
+  document.cookie = "surfeR" + cname + "=" + cvalue + ";" + expires + ";path=/";
+}
+
+function surfeRgetcookie(cname) {
+  var name = "surfeR" + cname + "=";
+  var decodedCookie = decodeURIComponent(document.cookie);
+  var ca = decodedCookie.split(';');
+  for(var i = 0; i <ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
 }
