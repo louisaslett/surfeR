@@ -27,7 +27,7 @@ bash surfeR/setup.sh
 If the server reboots, you can start the surfeR environment again by running
 
 ```{bash}
-/surfeR/surfeR.sh
+/surfeR/surfeR.sh > /dev/null 2>/dev/null &
 ```
 
 Then, to test the setup, visit http://your-server-ip-address/test.html in a browser to test out the code.  Note that cookies tie your session, so if you want to test the queuing mechanism, you will need to launch multiple incognito/private browser sessions to do so.
