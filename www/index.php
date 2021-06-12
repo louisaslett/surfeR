@@ -33,7 +33,7 @@ $blockid = $_POST['block'];
 $path = (isset($_POST['persistent']) ? '/1/persistent' : '/1/ephemeral');
 
 # Clear out any existing files for this block and session
-system("rm /1/*-$blockid-$uuid.html; rm /2/*-$blockid-$uuid.R; rm /3/*-$blockid-$uuid.R");
+system("rm /1/persistent/*-$blockid-$uuid.R /1/ephemeral/*-$blockid-$uuid.R /2/*-$blockid-$uuid.R /3/*-$blockid-$uuid.html");
 
 # Write code to be processed
 $t = time();
