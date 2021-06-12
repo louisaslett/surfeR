@@ -67,7 +67,7 @@ if(count(glob("/1/persistent/*-$blockid-$uuid.R"))+count(glob("/1/ephemeral/*-$b
   $runtime = time()-$strt;
   header('Refresh:'.$pos.'; url=running.php?strt='.urlencode($strt).'&block='.$blockid.'&uuid='.urlencode($_GET['uuid']).'&sess='.urlencode($_GET['sess']));
   echo "<script>var secs = $runtime; setInterval(updT, 1000); function updT() { ++secs; document.getElementById('secs').innerHTML = secs+'.'; }</script>Your code is in the queue waiting to run, please wait!  Currently in position $pos of $tot ... (you have been in the queue for <span id='secs'>$runtime</span> seconds)";
-  system('echo "." > /1/pause &'); # Ensure run loop unblocked
+  exec('echo "." 2>&1 | tee -a /1/pause > /dev/null 2> /dev/null < /dev/null &'); # Ensure run loop unblocked
   exit();
 }
 ?>

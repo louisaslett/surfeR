@@ -40,7 +40,7 @@ $t = time();
 file_put_contents("$path/$t-$blockid-$uuid.R", $_POST['code']);
 
 # Unblock run loop
-system('echo "." > /1/pause &');
+exec('echo "." 2>&1 | tee -a /1/pause > /dev/null 2> /dev/null < /dev/null &');
 
 # Redirect to await result
 header('Location: running.php?block='.$blockid.'&uuid='.urlencode($_POST['uuid']).'&sess='.urlencode($_POST['sess']),
