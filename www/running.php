@@ -54,7 +54,8 @@ if(count(glob("/2/*-$blockid-$uuid.R"))>0) {
   header('Refresh:1; url=running.php?strt='.urlencode($strt).'&block='.$blockid.'&uuid='.urlencode($_GET['uuid']).'&sess='.urlencode($_GET['sess']));
   $runtime = time()-filemtime(glob("/2/*-$blockid-$uuid.R")[0]);
   echo "Your code is currently executing!  Running for $runtime seconds ... (max allowed $MAXRUNTIME)";
-  system('echo "." > /1/pause &'); # Ensure run loop unblocked
+  # Don't need to do an unblock call to pipe as surfeR.sh only moves from queue
+  # to running state, so if already running just need to wait for completion
   exit();
 }
 if(count(glob("/1/persistent/*-$blockid-$uuid.R"))+count(glob("/1/ephemeral/*-$blockid-$uuid.R"))>0) {
