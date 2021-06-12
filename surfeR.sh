@@ -22,7 +22,7 @@ do
   while [ ${#pending[@]} -eq 0 ]
   do
     #inotifywait -m /surfeR/www-run/1 -e create -e moved_to | echo "found"
-    sleep 1
+    cat /surfeR/www-run/1/pause > /dev/null
     pending=(/surfeR/www-run/1/persistent/* /surfeR/www-run/1/ephemeral/*)
   done
 
@@ -31,8 +31,7 @@ do
   procs=(/surfeR/Rrunning/*)
   while [ ${#procs[@]} -gt $((MAXSIMUL-1)) ]
   do
-    echo "full"
-    sleep 1
+    cat /surfeR/www-run/1/pause > /dev/null
     procs=(/surfeR/Rrunning/*)
   done
 

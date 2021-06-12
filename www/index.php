@@ -39,6 +39,9 @@ system("rm /1/persistent/*-$blockid-$uuid.R /1/ephemeral/*-$blockid-$uuid.R /2/*
 $t = time();
 file_put_contents("$path/$t-$blockid-$uuid.R", $_POST['code']);
 
+# Unblock run loop
+system('echo "." > /1/pause &');
+
 # Redirect to await result
 header('Location: running.php?block='.$blockid.'&uuid='.urlencode($_POST['uuid']).'&sess='.urlencode($_POST['sess']),
        true, 302);

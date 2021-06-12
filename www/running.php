@@ -54,6 +54,7 @@ if(count(glob("/2/*-$blockid-$uuid.R"))>0) {
   header('Refresh:1; url=running.php?strt='.urlencode($strt).'&block='.$blockid.'&uuid='.urlencode($_GET['uuid']).'&sess='.urlencode($_GET['sess']));
   $runtime = time()-filemtime(glob("/2/*-$blockid-$uuid.R")[0]);
   echo "Your code is currently executing!  Running for $runtime seconds ... (max allowed $MAXRUNTIME)";
+  system('echo "." > /1/pause &'); # Ensure run loop unblocked
   exit();
 }
 if(count(glob("/1/persistent/*-$blockid-$uuid.R"))+count(glob("/1/ephemeral/*-$blockid-$uuid.R"))>0) {
@@ -65,6 +66,7 @@ if(count(glob("/1/persistent/*-$blockid-$uuid.R"))+count(glob("/1/ephemeral/*-$b
   $runtime = time()-$strt;
   header('Refresh:'.$pos.'; url=running.php?strt='.urlencode($strt).'&block='.$blockid.'&uuid='.urlencode($_GET['uuid']).'&sess='.urlencode($_GET['sess']));
   echo "<script>var secs = $runtime; setInterval(updT, 1000); function updT() { ++secs; document.getElementById('secs').innerHTML = secs+'.'; }</script>Your code is in the queue waiting to run, please wait!  Currently in position $pos of $tot ... (you have been in the queue for <span id='secs'>$runtime</span> seconds)";
+  system('echo "." > /1/pause &'); # Ensure run loop unblocked
   exit();
 }
 ?>

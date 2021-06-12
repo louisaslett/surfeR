@@ -56,3 +56,4 @@ fi
 touch /surfeR/lastrun
 rm /surfeR/www-run/2/$f
 rm -rf $d
+echo "." > /surfeR/www-run/1/pause

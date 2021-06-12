@@ -31,6 +31,7 @@ docker pull php:apache
 
 # Setup directories
 mkdir -p /surfeR/Rrunning /surfeR/www-run/0 /surfeR/www-run/1/ephemeral /surfeR/www-run/1/persistent /surfeR/www-run/2 /surfeR/www-run/3
+mkfifo /surfeR/www-run/1/pause
 cp $SCRIPT_DIR/surfeR.sh /surfeR
 cp $SCRIPT_DIR/config.sh /surfeR
 cp -r $SCRIPT_DIR/R /surfeR
