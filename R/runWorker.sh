@@ -12,7 +12,7 @@ do
   cp /surfeR/R/hidehead.css /surfeR/Rrunning/$1
   cp /surfeR/R/cpuLimitKnit.sh /surfeR/Rrunning/$1
 
-  docker run --rm -v /surfeR/Rrunning/$1:/surfeR rocker/ml-verse:4.0.5 /surfeR/cpuLimitKnit.sh $MAXRUNTIME
+  docker run --rm -v /surfeR/Rrunning/$1:/surfeR $DOCKERIMG /surfeR/cpuLimitKnit.sh $MAXRUNTIME
 
   retval=$?
 

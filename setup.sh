@@ -21,10 +21,12 @@ then
 fi
 
 # Pull images
-docker pull $DOCKERIMG
-if [ $? -ne 0 ]; then
-  echo "Error: the image $DOCKERIMG returned an error when attempting to pull.  Aborting setup ..."
-  exit 1
+if ! docker image inspect $DOCKERIMG; then
+  docker pull $DOCKERIMG
+  if [ $? -ne 0 ]; then
+    echo "Error: the image $DOCKERIMG returned an error when attempting to pull.  Aborting setup ..."
+    exit 1
+  fi
 fi
 
 docker pull php:apache
