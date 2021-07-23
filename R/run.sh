@@ -18,13 +18,15 @@ do
 done
 # If there are none then exit
 [ -z "$runwith" ] && exit 0
+# If there is one, then we reserve the worker to run it on
+rm /surfeR/Rrunning/$1/ready
 
 mkdir $d
 mv $runwith /surfeR/www-run/2/$f
 touch /surfeR/www-run/2/$f
 
 if [[ $runwith == *"/persistent/"* ]]; then
-  [ -f /surfeR/www-run/0/$u.RData ] && cp /surfeR/www-run/0/$u.RData $d
+  [ -f /surfeR/www-run/0/$u.RData ] && cp /surfeR/www-run/0/$u.RData /surfeR/Rrunning/$1/$u.RData
   sed "s/PERSISTENTFILE/$u.RData/g" /surfeR/R/head-persistent.Rmd > $d/${f%.R}.Rmd
   cat /surfeR/www-run/2/$f >> $d/${f%.R}.Rmd
   sed "s/PERSISTENTFILE/$u.RData/g" /surfeR/R/tail-persistent.Rmd >> $d/${f%.R}.Rmd
@@ -33,27 +35,16 @@ else
   cat /surfeR/www-run/2/$f >> $d/${f%.R}.Rmd
   cat /surfeR/R/tail-ephemeral.Rmd >> $d/${f%.R}.Rmd
 fi
-cp /surfeR/R/hidehead.css $d
 
-timeout --kill-after=10s $MAXRUNTIME docker run --rm -v /surfeR/Rrunning:/surfeR/Rrunning rocker/ml-verse:4.0.5 timeout --kill-after=10s $MAXRUNTIME Rscript -e "rmarkdown::render('$d/${f%.R}.Rmd')"
+cp $d/${f%.R}.Rmd /surfeR/Rrunning/$1/in.Rmd
+echo "." > /surfeR/Rrunning/$1/hold
 
-retval=$?
+cat /surfeR/Rrunning/$1/hold > /dev/null
+mv /surfeR/Rrunning/$1/in.html /surfeR/www-run/3/${f%.R}.html
+[ -f /surfeR/Rrunning/$1/$u.RData ] && cp /surfeR/Rrunning/$1/$u.RData /surfeR/www-run/0/$u.RData
 
-if [ $retval -eq 124 ] || [ $retval -eq 137 ]
-then
-  echo "Sorry, your command timed out [status=$retval] (maximum runtime is $MAXRUNTIME)" > /surfeR/www-run/3/${f%.R}.html
-else
-  if [ -f "$d/${f%.R}.html" ]
-  then
-    mv $d/${f%.R}.html /surfeR/www-run/3
-    if [[ $runwith == *"/persistent/"* ]]; then
-      [ -f $d/$u.RData ] && cp $d/$u.RData /surfeR/www-run/0/$u.RData
-    fi
-  else
-    echo "Sorry, it looks like R might have crashed while running your code! [status=$retval]" > /surfeR/www-run/3/${f%.R}.html
-  fi
-fi
 touch /surfeR/lastrun
 rm /surfeR/www-run/2/$f
 rm -rf $d
+echo "." > /surfeR/Rrunning/$1/hold
 echo "." > /surfeR/www-run/1/pause

@@ -16,6 +16,16 @@ docker run --rm -d -p 80:80 --name php \
 
 shopt -s nullglob
 chmod u+x /surfeR/R/*.sh
+
+# Ensure no dangling workers
+killall runWorker.sh
+
+# Pre-warm the workers
+for i in $(seq -f "%03g" 1 $MAXSIMUL)
+do
+  . /surfeR/R/runWorker.sh $i &
+done
+
 while true
 do
   pending=(/surfeR/www-run/1/persistent/* /surfeR/www-run/1/ephemeral/*)
@@ -26,16 +36,16 @@ do
     pending=(/surfeR/www-run/1/persistent/* /surfeR/www-run/1/ephemeral/*)
   done
 
-  # Check how many containers are running
-  # Keep looping until we have capacity
-  procs=(/surfeR/Rrunning/*)
-  while [ ${#procs[@]} -gt $((MAXSIMUL-1)) ]
+  # Check for available workers
+  workers=(/surfeR/Rrunning/*/ready)
+  while [ ${#workers[@]} -eq 0 ]
   do
     cat /surfeR/www-run/1/pause > /dev/null
-    procs=(/surfeR/Rrunning/*)
+    workers=(/surfeR/Rrunning/*/ready)
   done
+  nw=${workers[0]##*ing/}
 
-  /surfeR/R/run.sh &
+  /surfeR/R/run.sh ${nw%/ready} &
   /surfeR/R/tidy.sh &
-  sleep 1
+  sleep 0.25
 done

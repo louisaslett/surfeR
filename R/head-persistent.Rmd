@@ -1,8 +1,7 @@
 ---
 title: "surfeR: remote R exection (louisaslett/surfeR)"
 output:
-  html_document:
-    css: "hidehead.css"
+  html_fragment: default
 ---
 
 ```{r setup, include=FALSE}

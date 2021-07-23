@@ -9,7 +9,7 @@ DOCKERIMG=rocker/ml-verse:4.0.5
 # eg 30s => 30 seconds
 #     1h => 1 hour
 #  1h30m => 1 hour and 30 mins etc
-MAXRUNTIME=30s
+MAXRUNTIME=30
 
 # How many queries to service in parallel.
 # Be careful not to exhaust system memory or over-contend the CPU.  The value
