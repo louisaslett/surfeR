@@ -1,22 +1,22 @@
 #!/bin/bash
 
-# Assumes an Ubuntu 20.04 system
+# Assumes an Ubuntu LTS system
 
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )"
 chmod u+x $SCRIPT_DIR/config.sh
 . $SCRIPT_DIR/config.sh
 
-# Install Docker on Ubuntu 20.04
+# Install Docker on Ubuntu LTS
 if ! command -v docker &> /dev/null
 then
-  apt update
-  apt install -y apt-transport-https ca-certificates curl software-properties-common
+  apt-get update
+  apt-get install -y apt-transport-https ca-certificates curl software-properties-common
   curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-  add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable"
-  apt update
+  add-apt-repository "deb [arch=$(dpkg --print-architecture)] https://download.docker.com/linux/ubuntu $(. /etc/os-release && echo "$VERSION_CODENAME") stable"
+  apt-get update
   apt-cache policy docker-ce
   ### Check last line shows docker and not ubuntu repo
-  apt install -y docker-ce
+  apt-get install -y docker-ce
   systemctl --no-pager status docker
 fi
 
