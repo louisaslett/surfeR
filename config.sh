@@ -3,13 +3,14 @@
 # Setup configuration options here ...
 
 # What docker image should be used to run scripts?
-DOCKERIMG=rocker/ml-verse:4.0.5
+# You can of course create your own image and then include the tag here.
+DOCKERIMG=rocker/ml-verse:latest
 
 # What is the maximum runtime to allow?
 # eg 30s => 30 seconds
 #     1h => 1 hour
 #  1h30m => 1 hour and 30 mins etc
-MAXRUNTIME=30
+MAXRUNTIME=30s
 
 # How many queries to service in parallel.
 # Be careful not to exhaust system memory or over-contend the CPU.  The value
